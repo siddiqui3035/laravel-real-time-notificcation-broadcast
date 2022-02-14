@@ -143,5 +143,207 @@ npm instal laravel-echo pusher-js
 
 ```
 
+## Now go to resource/js/app.js
 
+```php
+import { createApp } from 'vue';
 
+import Posts from'./components/Posts.vue';
+
+const app = createApp({});
+
+app.component('posts',Posts);
+app.mount("#app");
+
+```
+
+## Now create a Vue file on resource/component forder
+Now add below code on new created file.
+```html
+<template>
+
+Vue 3
+</template>
+```
+
+## Now use this tamplate in resource/view/home.blade.php
+
+```html
+   {{ __('You are logged in!') }}
+    <posts />
+```
+## Now run
+
+```php
+npm run watch
+```
+&
+```php
+php artisan migrate
+```
+
+## Now create a Model
+
+```php
+ php artisan make:model Post -mcf
+ ```
+## Now create user seeder
+
+```php
+php artisan make:seeder UserSeeder 
+ ```
+
+ ## Now add data on Postfactory
+
+```php
+public function definition()
+{
+    return [
+        'title' => $this->faker->paragraph(1),
+        'discription' => $this->faker->paragraph(4),
+        'user_id' => User::get()->random()->id,
+    ];
+
+}
+```
+
+## Now add data on userSeeder
+
+```php
+public function run()
+    {
+        $user = [
+            [
+                'name' => 'User 1',
+                'email' => 'user1@test.com',
+                'password' => bcrypt('password'),
+
+            ],
+            [
+                'name' => 'User 2',
+                'email' => 'user2@test.com',
+                'password' => bcrypt('password'),
+
+            ],
+            [
+                'name' => 'User 3',
+                'email' => 'user3@test.com',
+                'password' => bcrypt('password'),
+
+            ],
+
+            [
+                'name' => 'User 4',
+                'email' => 'user4@test.com',
+                'password' => bcrypt('password'),
+
+            ],
+
+            [
+                'name' => 'User 5',
+                'email' => 'user5@test.com',
+                'password' => bcrypt('password'),
+
+            ],
+
+            [
+                'name' => 'User 6',
+                'email' => 'user6@test.com',
+                'password' => bcrypt('password'),
+
+            ],
+        ];
+
+        User::insert($user);
+    }
+```
+
+## Now add data on DatabaseSeeder
+
+```php
+   public function run()
+    {
+        // \App\Models\User::factory(10)->create();
+        $this->call(UserSeeder::class);
+        \App\Models\Post::factory(20)->create();
+
+    }
+```
+
+## Now run 
+
+```php
+php artisan migrate:fresh --seed
+```
+
+## Now go to home controller 
+
+```php 
+    $data['posts'] = Post::where('user_id',auth()->user()->id)->with('user')->get();
+    return view('home', $data);
+```
+
+## Now go to post and user model
+
+create relation with user has many post & post belongsto user for show;
+
+On post model;
+```php
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+```
+&
+
+On user model;
+```php
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
+```
+
+## Add table in Post.vue file
+
+```html
+<template>
+    <div class="container">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Post_action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <template v-for="post in posts" :key="post.id">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>{{post.title}}</td>
+                        <td>{{post.user.name}}</td>
+                        <td>
+                            <button type="btn btn-sm btn-info" @click="LikePost(post.id)">
+                                Like
+                            </button>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        
+        </table>
+    </div>
+</template>
+
+<script>
+    export default{
+            props:['posts','user'],
+            setup(){
+            function LikePost(post_id) {
+                console.log(post_id);
+            }
+        }
+    }
+</script>
+```
