@@ -1,50 +1,218 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Laravel Realtime Notification 
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<p align="end">
+<a href="https://github.com/iamnurr/like-dislike-bucket/issues"><img src="https://img.shields.io/github/issues/iamnurr/like-dislike-bucket?color=critical" alt="Issues"></a>
+<a href="https://github.com/iamnurr/like-dislike-bucket/stargazers"><img src="https://img.shields.io/github/stars/iamnurr/like-dislike-bucket?color=success" alt="Stars"></a>
+ <a href="https://github.com/iamnurr/like-dislike-bucket/forks"><img src="https://img.shields.io/github/forks/iamnurr/like-dislike-bucket?color=9cf" alt="Forks"></a>
+ <a href="https://github.com/iamnurr/like-dislike-bucket/tags"><img src="https://img.shields.io/github/v/tag/iamnurr/like-dislike-bucket" alt="Tag"></a>
+<a href="https://github.com/iamnurr/like-dislike-bucket/blob/main/LICENSE"><img src="https://img.shields.io/github/license/iamnurr/like-dislike-bucket?color=orange" alt="License"></a>
+<a><img src="https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fiamnurr%2Flike-dislike-bucket" alt="Twitter"></a>
 </p>
 
-## About Laravel
+## About Package
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This is a package for developers who want to use real time notification with broadcast.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Installing
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+This package can be installed through Composer in your application :
 
-## Create a Laravel project
+##### Create a Laravel project
 
-composer create-project laravel/laravel:^8.0 real-time-notificcation-broadcast
+```shell
+composer create-project laravel/laravel:^8.0 real-time-notificcation-broadcast 
+```
 
-## Install laravel ui
+### Migration
 
-composer require laravel/ui
+After that run the Migration command :
 
-## Install vue auth
+```php
+php artisan migrate
+```
+## Model Use
 
-* php artisan ui vue --auth
+The model where you want to have like and dislike. 
+You just need to use `NrType\LikeDislike\Traits\Likeable` and `NrType\LikeDislike\Traits\Dislikeable`.
+ And inside the class use `Likeable` and `Dislikeable`.
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```php
+use NrType\LikeDislike\Traits\Likeable;
+use NrType\LikeDislike\Traits\Dislikeable;
 
-## Code of Conduct
+class Post extends Model
+{
+    use Likeable, Dislikeable;
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+##### You can use like dislike options in multiple `Model`
 
-## Security Vulnerabilities
+Multiple `Model` are can be `Comment`,`Video`,`Photo`.
+```php
+use NrType\LikeDislike\Traits\Likeable;
+use NrType\LikeDislike\Traits\Dislikeable;
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+class Comment extends Model
+{
+    use Likeable, Dislikeable;
+}
+```
+
+## Optional
+
+Suppose you just only need Like option for your application. 
+Then you use `NrType\LikeDislike\Traits\Likeable` and `Likeable`.
+
+```php
+use NrType\LikeDislike\Traits\Likeable;
+
+class Post extends Model
+{
+    use Likeable;
+}
+```
+
+# Uses in Controller
+
+## Like
+Use like option in the post such as like 2 lines of code.
+
+```php
+public function like (Post $post)
+{
+    $post->like();
+
+    return redirect()->route('posts.index');
+}
+```
+
+### But 
+Suppose you want that someone's `click` like button then it will like the post and again he `click` liked button then it will unlike the post. Then here is `removeLike()`. if User alreay like that post it will remove that particular like in the same method or if you want you can create another route and method to unlike the post. 
+
+```php
+public function like (Post $post)
+{
+    if($post->removeLike()){
+        return redirect()->route('posts.index');
+    }
+
+    $post->like();
+
+    return redirect()->route('posts.index');
+}
+```
+
+## DisLike
+Use dislike in the post same as like in post. For dislike options again you have `dislike()` and `removeDislike()`
+
+```php
+public function dislike (Post $post)
+{
+    $post->dislike();
+
+    return redirect()->route('posts.index');
+}
+```
+
+### Or  
+
+```php
+public function dislike (Post $post)
+{
+    if ($post->removeDislike()) {
+        return redirect()->route('posts.index');
+    }
+
+    $post->dislike();
+
+    return redirect()->route('posts.index');
+}
+```
+
+## Compatibility
+
+`Like` and `Dislike` can work individually and also both are compatible to work with each other, suppose someone like the post and after some time later thinks that he/she wants to dislike the post. He/she just simply click the dislike button, and it will `remove` his/her `like` on that particular post and `dislike`.
+
+## Likers and Dislikers on the Post
+You can easily access likers and dislikers through `likers()` and `dislikers()`. default it will return with users `id`,`name` from `users` table.
+
+```php
+public function likers (Post $post)
+{
+    return $post->likers(); 
+}
+```
+
+### Or
+
+```php
+public function dislikers (Post $post)
+{
+    return $post->dislikers(); 
+}
+```
+
+#### Now here has somethings
+`likers()` and `dislikers()` default return `id`,`name` but you maybe don't need `id`, you may only need `name` or your users database table doesn't have `name` field, it can be `first_name`,`last_name` or maybe something else or maybe you need more then those fields. Here have a solution. You just pass a `array` in side the method. It will return those fields data form users table.
+
+```php
+public function likers (Post $post)
+{
+    $fields = ['id','first_name','last_name','age'];
+
+    return $post->likers($fields); 
+}
+```
+
+### Or
+
+```php
+public function dislikers (Post $post)
+{
+    $fields = ['id','name','age'];
+
+    return $post->dislikers($fields); 
+}
+```
+
+## `with()` relationship call in Controller
+You can show `likes`, `dislikes` on posts and also want to show how many likes and dislike on posts with `likeCounter`, `dislikeCounter`.
+
+```php
+public function index()
+{
+    $relations = ['likes','likeCounter','dislikes','dislikeCounter'];
+
+    $data['posts'] = Post::with($relations)->get();
+
+    return view('post.index', $data);
+}
+```
+
+### Or
+You may have `comments` on `posts` and you need `comments` and also  need `likes` on particular `comment` and how many `likes` on `comment`. Then you can use `comments.likes` and `comments.likeCounter`.
+
+```php
+public function index()
+{
+    $relations = ['likes','likeCounter','dislikes','dislikeCounter''comments.likes','comments.likeCounter'];
+
+    $data['posts'] = Post::with($relations)->get();
+
+    return view('post.index', $data);
+}
+```
+
+## Additional options
+`hasLike()`, `hasDislike()` is for check that logged in user has like or dislike in post or comment. It return `boolean`. You can use  `hasLike()` `hasDislike()` in blades file as well.
+
+```php
+{{ $post->hasLike() ? 'Liked' : 'Like' }}
+{{ $post->hasDislike() ? 'Disliked' : 'Dislike' }}
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Like Dislike bucket is open-sourced software licensed under the MIT license.
