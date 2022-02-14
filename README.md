@@ -31,7 +31,7 @@ composer require laravel/ui
 
 ## Install vue auth
 
-- php artisan ui vue --auth
+* php artisan ui vue --auth
 
 ## Contributing
 
