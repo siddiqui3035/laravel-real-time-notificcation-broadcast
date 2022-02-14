@@ -23,6 +23,29 @@ This package can be installed through Composer in your application :
 composer create-project laravel/laravel:^8.0 real-time-notificcation-broadcast 
 ```
 
+##### Install laravel ui
+
+```shell
+composer require laravel/ui
+```
+
+##### Install vue auth
+
+```php
+php artisan ui vue --auth
+```
+
+```shell
+npm install vue@next vue-loader@next
+```
+```shell
+npm install
+```
+
+```shell
+npm run dev
+```
+
 ### Migration
 
 After that run the Migration command :
