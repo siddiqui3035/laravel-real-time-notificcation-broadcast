@@ -81,3 +81,67 @@ php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsSe
 php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider" --tag="config"
 ```
 
+## Go to config app.php:
+Uncommand 
+```php
+App\Providers\BroadcastServiceProvider::class,
+```
+
+## Go to config broadcasting.php:
+Add host and port;
+```php
+     'pusher' => [
+            'driver' => 'pusher',
+            'key' => env('PUSHER_APP_KEY'),
+            'secret' => env('PUSHER_APP_SECRET'),
+            'app_id' => env('PUSHER_APP_ID'),
+            'options' => [
+                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'useTLS' => true,
+
+                'host' => '127.0.0.1',
+                'port' => '6001',
+                'scheme' => 'http',
+
+            ],
+        ],
+```
+## Go to .env:
+Add APP_URL;
+```php
+     APP_URL=http://localhost:8000
+```
+&
+```php
+PUSHER_APP_ID=pusher_app_id
+PUSHER_APP_KEY=pusher_app_key
+PUSHER_APP_SECRET=pusher_app_secret
+PUSHER_APP_CLUSTER=mt1
+```
+
+## Go to resource/js/bootstrap.js
+
+```php
+import Echo from 'laravel-echo';
+
+window.Pusher = require('pusher-js');
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: process.env.MIX_PUSHER_APP_KEY,
+    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    forceTLS: false,
+    wsHost: window.location.hostname,
+    wsPort: 6001,
+});
+```
+
+## Now Install laravel echo and pusher
+
+```php
+npm instal laravel-echo pusher-js
+
+```
+
+
+

@@ -23,6 +23,8 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "laravel-echo": "^1.11.3",
+        "pusher-js": "^7.0.6",
         "vue-loader": "^17.0.0"
     }
 }
