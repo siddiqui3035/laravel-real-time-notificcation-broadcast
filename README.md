@@ -172,6 +172,12 @@ Vue 3
    {{ __('You are logged in!') }}
     <posts />
 ```
+or 
+
+```html
+    <posts :posts="{{ $posts }}" :user="{{ auth()->user() }}"
+    :user_notifications="{{ auth()->user()->notifications }}"/>
+```
 ## Now run
 
 ```php
@@ -307,6 +313,9 @@ On user model;
 ```html
 <template>
     <div class="container">
+        <div class="card">
+            <notify :user="user" :user_notifications="user_notifications" />
+        </div>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -337,13 +346,93 @@ On user model;
 </template>
 
 <script>
+    import {ref, onMounted} from  'vue';
+    import Notify from './PostNotify.vue'
     export default{
-            props:['posts','user'],
-            setup(){
-            function LikePost(post_id) {
-                console.log(post_id);
+            props:['posts','user', 'user_notifications'],
+            components:{
+                'notify':Notify
+            },
+            setup(props){
+            function LikePost(id) {
+                axios.post('/post-like',{'post_id':id}).then(response=> {
+                    console.log(response.data);
+                })
+            }
+            return {
+                posts,
+                LikePost
             }
         }
     }
 </script>
+```
+
+## Create PostNotify.vue file
+
+```html
+
+<template>
+    <div class="card-body" v-if="notifications">
+        <div class="alert alert-info alert-dismissable fade show" id='redAlert' role="alert" 
+        v-for="notify in notifications" :key="notify">
+            <strong>{{notify.data.user_name}}</strong>liked your post <b>{{ notify.data.post_title}}</b>
+            <button class="btn btn-info ml-3">Read</button> 
+        </div>
+    </div>
+</template>
+
+<script>
+    import {ref, onMounted} from  'vue';
+
+    export default{
+    props:['user','user_notifications'],
+    setup(props){
+    let users = ref([])
+    let notifications = ref([])
+
+    onMounted(()=>{
+        notifications.value = props.user_notifications
+    })
+
+    Echo.private('post_like.'+props.user.id)
+    .notification((notification)=>{
+    notifications.value.push(notification.notification);
+    console.log();
+    })
+
+    return {
+        notifications
+    }
+
+
+
+    }
+
+
+    }
+
+
+
+</script>
+```
+
+## Add route for post like
+
+```php
+Route::post('/post-like', [App\Http\Controllers\HomeController::class, 'postLike']);
+
+```
+
+## add method on home controller
+
+```php
+    public function postLike(Request $request){
+        $user = auth()->user();
+        $post = Post::whereId($request->post_id)->with('user')->first();
+
+        $author = $post->user;
+
+        $author->notify(new PostLikeNotification($user,$post));
+    }
 ```

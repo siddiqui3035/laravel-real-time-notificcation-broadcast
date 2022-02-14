@@ -1,5 +1,8 @@
 <template>
     <div class="container">
+        <div class="card">
+            <notify :user="user" :user_notifications="user_notifications" />
+        </div>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -30,11 +33,22 @@
 </template>
 
 <script>
+    import {ref, onMounted} from  'vue';
+    import Notify from './PostNotify.vue'
     export default{
-            props:['posts','user'],
-            setup(){
-            function LikePost(post_id) {
-                console.log(post_id);
+            props:['posts','user', 'user_notifications'],
+            components:{
+                'notify':Notify
+            },
+            setup(props){
+            function LikePost(id) {
+                axios.post('/post-like',{'post_id':id}).then(response=> {
+                    console.log(response.data);
+                })
+            }
+            return {
+                posts,
+                LikePost
             }
         }
     }

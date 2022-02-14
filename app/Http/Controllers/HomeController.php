@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Notifications\PostLikeNotification;
 
 class HomeController extends Controller
 {
@@ -26,5 +27,14 @@ class HomeController extends Controller
     {
         $data['posts'] = Post::where('user_id',auth()->user()->id)->with('user')->get();
         return view('home', $data);
+    }
+
+    public function postLike(Request $request){
+        $user = auth()->user();
+        $post = Post::whereId($request->post_id)->with('user')->first();
+
+        $author = $post->user;
+
+        $author->notify(new PostLikeNotification($user,$post));
     }
 }
