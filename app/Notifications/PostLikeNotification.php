@@ -14,6 +14,7 @@ use Illuminate\Notifications\Notification;
 class PostLikeNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
+
     protected $user;
     protected $post;
 
@@ -37,7 +38,7 @@ class PostLikeNotification extends Notification implements ShouldBroadcast
      */
     public function via($notifiable)
     {
-        return ['datsbade', 'broadcast'];
+        return ['database', 'broadcast'];
     }
 
     

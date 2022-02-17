@@ -25,10 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // $data['posts'] = Post::where('user_id',auth()->user()->id)->with('user')->get();
-        $postss = Post::with('user')->get();
-        // return view('home', $data);
-        return view('home',['posts'=>$postss]);
+        $data['posts'] = Post::where('user_id',auth()->user()->id)->with('user')->get();
+        return view('home', $data);
     }
 
     public function postLike(Request $request){

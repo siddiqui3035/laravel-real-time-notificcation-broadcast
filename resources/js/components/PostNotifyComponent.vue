@@ -14,31 +14,23 @@ import {ref, onMounted} from  'vue';
 export default{
 props:['user','user_notifications'],
 setup(props){
-let users = ref([])
-let notifications = ref([])
+        let users = ref([])
+        let notifications = ref([])
 
-onMounted(()=>{
-    notifications.value = props.user_notifications
-})
+        onMounted(()=>{
+            notifications.value = props.user_notifications
+        })
 
-Echo.private('post_like.'+props.user.id)
-.notification((notification)=>{
-notifications.value.push(notification.notification);
-console.log();
-})
+        Echo.private('post_like.'+props.user.id)
+        .notification((notification)=>{
+        notifications.value.push(notification.notification);
+        console.log();
+        })
 
-return {
-    notifications
+        return {
+            notifications
+        }
+    }
 }
-
-
-
-}
-
-
-
-}
-
-
 
 </script>
