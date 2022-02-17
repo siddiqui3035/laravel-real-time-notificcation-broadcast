@@ -18,7 +18,7 @@
                     <tr>
                         <th scope="row">1</th>
                         <td>{{post.title}}</td>
-                        <td>{{post.user.name}}</td>
+                        <!-- <td>{{post.user.name}}</td> -->
                         <td>
                             <button type="btn btn-sm btn-info" @click="LikePost(post.id)">
                                 Like
@@ -47,8 +47,7 @@
                 })
             }
             return {
-                posts,
-                LikePost
+                postssssss
             }
         }
     }

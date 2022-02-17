@@ -1,13 +1,5 @@
 # Laravel Realtime Notification 
 
-<p align="end">
-<a href="https://github.com/iamnurr/like-dislike-bucket/issues"><img src="https://img.shields.io/github/issues/iamnurr/like-dislike-bucket?color=critical" alt="Issues"></a>
-<a href="https://github.com/iamnurr/like-dislike-bucket/stargazers"><img src="https://img.shields.io/github/stars/iamnurr/like-dislike-bucket?color=success" alt="Stars"></a>
- <a href="https://github.com/iamnurr/like-dislike-bucket/forks"><img src="https://img.shields.io/github/forks/iamnurr/like-dislike-bucket?color=9cf" alt="Forks"></a>
- <a href="https://github.com/iamnurr/like-dislike-bucket/tags"><img src="https://img.shields.io/github/v/tag/iamnurr/like-dislike-bucket" alt="Tag"></a>
-<a href="https://github.com/iamnurr/like-dislike-bucket/blob/main/LICENSE"><img src="https://img.shields.io/github/license/iamnurr/like-dislike-bucket?color=orange" alt="License"></a>
-<a><img src="https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fiamnurr%2Flike-dislike-bucket" alt="Twitter"></a>
-</p>
 
 ## About Package
 
@@ -434,5 +426,101 @@ Route::post('/post-like', [App\Http\Controllers\HomeController::class, 'postLike
         $author = $post->user;
 
         $author->notify(new PostLikeNotification($user,$post));
+
+        return response()->json(['success']);
     }
 ```
+
+## add notification 
+
+```php
+    php artisan make:notification PostLikeNotification
+```
+
+&
+```php
+
+<?php
+
+namespace App\Notifications;
+
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+
+class PostLikeNotification extends Notification implements ShouldBroadcast
+{
+    use Queueable;
+    protected $user;
+    protected $post;
+
+    /**
+     * Create a new notification instance.
+     *
+     * @return void
+     */
+    public function __construct(User $user, Post $post)
+    {
+        $this->user = $user;
+        $this->post = $post;
+
+    }
+
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function via($notifiable)
+    {
+        return ['datsbade', 'broadcast'];
+    }
+
+    
+    public function toArray($notifiable)
+    {
+        return [
+            'post_id' => $this->post->id,
+            'user_id' => $this->user->id,
+            'user_name' => $this->user->name,
+            'post_title' => $this->post->title,
+
+        ];
+    }
+
+    public function  toBroadcast($notifiable){
+        $notification = [
+            "data" =>  [
+                "user_name" => $this->user->name,
+                "post_title" => $this->post->title,
+            ]
+        ];
+        return new BroadcastMessage([
+            'notification' => $notification,
+        ]);
+    }
+}
+
+
+```
+
+## Go to user model
+
+```php
+   public function receivesBroadcastNotificationOn(){
+        return 'post_like'.$this->id;
+    }
+```
+
+## Go to route/channel.php
+
+```php
+
+```
+
