@@ -131,7 +131,7 @@ window.Echo = new Echo({
 ## Now Install laravel echo and pusher
 
 ```php
-npm instal laravel-echo pusher-js
+npm install laravel-echo pusher-js
 
 ```
 
