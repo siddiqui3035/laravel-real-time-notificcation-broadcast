@@ -479,7 +479,7 @@ class PostLikeNotification extends Notification implements ShouldBroadcast
      */
     public function via($notifiable)
     {
-        return ['datsbade', 'broadcast'];
+        return ['database', 'broadcast'];
     }
 
     
