@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['posts'] = Post::where('user_id',auth()->user()->id)->with('user')->get();
+        $data['posts'] = Post::with('user')->get();
         return view('home', $data);
     }
 
@@ -35,7 +35,9 @@ class HomeController extends Controller
 
         $author = $post->user;
 
-        $author->notify(new PostLikeNotification($user,$post));
+        if($author){
+            $author->notify(new PostLikeNotification($user,$post));
+        }
 
         return response()->json(['success']);
     }

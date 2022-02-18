@@ -132,7 +132,11 @@ window.Echo = new Echo({
 
 ```php
 npm instal laravel-echo pusher-js
+```
+Or
 
+```php
+npm install --save-dev laravel-echo pusher-js
 ```
 
 ## Now go to resource/js/app.js
@@ -521,6 +525,10 @@ class PostLikeNotification extends Notification implements ShouldBroadcast
 ## Go to route/channel.php
 
 ```php
+
+Broadcast::channel('post_like.{id}', function ($user, $id) {
+    return (int) $user->id === (int) $id;
+});
 
 ```
 

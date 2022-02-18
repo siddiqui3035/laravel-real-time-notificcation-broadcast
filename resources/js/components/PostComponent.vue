@@ -1,6 +1,7 @@
 ,<template>
     <div class="container">
         <div class="card">
+            Notifications:
             <notify :user="user" :user_notifications="user_notifications"></notify>
         </div>
         <table class="table">
