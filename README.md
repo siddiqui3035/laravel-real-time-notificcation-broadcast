@@ -131,9 +131,13 @@ window.Echo = new Echo({
 ## Now Install laravel echo and pusher
 
 ```php
+<<<<<<< HEAD
 npm instal laravel-echo pusher-js
 ```
 Or
+=======
+npm install laravel-echo pusher-js
+>>>>>>> 3750b2a8ea304b4f86b7ed36e69a8b5decd0eaf1
 
 ```php
 npm install --save-dev laravel-echo pusher-js
@@ -483,7 +487,7 @@ class PostLikeNotification extends Notification implements ShouldBroadcast
      */
     public function via($notifiable)
     {
-        return ['datsbade', 'broadcast'];
+        return ['database', 'broadcast'];
     }
 
     
