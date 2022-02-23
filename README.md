@@ -535,3 +535,28 @@ Broadcast::channel('post_like.{id}', function ($user, $id) {
 
 ```
 
+## Now run below command:
+
+```php
+
+php artisan serve
+
+```
+
+```php
+
+php artisan websockets:serve 
+
+```
+
+```php
+
+npm run watch
+
+```
+## Connect websocket in your project :
+
+```html
+http://127.0.0.1:8000/laravel-websockets
+
+```
