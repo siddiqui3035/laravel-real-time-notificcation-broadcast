@@ -1,5 +1,4 @@
-# Laravel Realtime Notification 
-
+### Laravel Realtime Notification:
 
 ## About Package
 

@@ -46,7 +46,10 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
-    public function receivesBroadcastNotificationOn(){
-        return 'post_like'.$this->id;
+
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'post_like.'.$this->id;
     }
+
 }

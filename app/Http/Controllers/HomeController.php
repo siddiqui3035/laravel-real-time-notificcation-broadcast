@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\Post;
 use App\Notifications\PostLikeNotification;
 
 class HomeController extends Controller
@@ -25,14 +25,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['posts'] = Post::with('user')->get();
-        return view('home', $data);
+        $posts = Post::with('user')->get();
+
+        return view('home',['posts'=>$posts]);
     }
 
     public function postLike(Request $request){
         $user = auth()->user();
-        $post = Post::whereId($request->post_id)->with('user')->first();
 
+        $post = Post::whereId($request->post_id)->with('user')->first();
+        // like code -----skip
         $author = $post->user;
 
         if($author){

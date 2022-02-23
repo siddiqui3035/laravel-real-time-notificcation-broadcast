@@ -2,22 +2,25 @@
 
 namespace App\Notifications;
 
-use App\Models\Post;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\BroadcastMessage;
+
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
 use Illuminate\Notifications\Notification;
+
+use App\Models\{
+    User,
+    Post
+};
 
 class PostLikeNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
-
     protected $user;
     protected $post;
-
     /**
      * Create a new notification instance.
      *
@@ -27,7 +30,6 @@ class PostLikeNotification extends Notification implements ShouldBroadcast
     {
         $this->user = $user;
         $this->post = $post;
-
     }
 
     /**
@@ -38,30 +40,30 @@ class PostLikeNotification extends Notification implements ShouldBroadcast
      */
     public function via($notifiable)
     {
-        return ['database', 'broadcast'];
+        return ['database','broadcast'];
     }
 
     
     public function toArray($notifiable)
     {
         return [
-            'post_id' => $this->post->id,
-            'user_id' => $this->user->id,
-            'user_name' => $this->user->name,
-            'post_title' => $this->post->title,
-
+            'post_id'   =>$this->post->id,
+            'user_id'   =>$this->user->id,
+            'user_name'   =>$this->user->name,
+            'post_title'   =>$this->post->title,
         ];
     }
 
-    public function  toBroadcast($notifiable){
+    public function toBroadcast($notifiable){
         $notification = [
-            "data" =>  [
+            "data" => [
                 "user_name" => $this->user->name,
                 "post_title" => $this->post->title,
             ]
         ];
+
         return new BroadcastMessage([
-            'notification' => $notification,
+            'notification' => $notification
         ]);
     }
 }

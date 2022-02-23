@@ -15,8 +15,9 @@
                     @endif
 
                     {{ __('You are logged in!') }}
-                    <posts :posts="{{ $posts }}" :user="{{ auth()->user() }}"
-                        :user_notifications="{{ auth()->user()->notifications }}"/>
+
+                    <posts :posts="{{ $posts }}" :user="{{ auth()->user() }}" :user_notifications="{{ auth()->user()->notifications }}" />
+
                 </div>
             </div>
         </div>
