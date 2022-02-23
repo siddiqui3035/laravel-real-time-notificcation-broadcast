@@ -556,7 +556,7 @@ npm run watch
 ```
 ## Connect websocket in your project :
 
-```html
+```web
 http://127.0.0.1:8000/laravel-websockets
 
 ```
