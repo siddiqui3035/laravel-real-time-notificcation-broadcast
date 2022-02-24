@@ -572,16 +572,3 @@ npm run watch
 http://127.0.0.1:8000/laravel-websockets
 
 ```
-
-## Other users of sweet alert in controller:
-
-```php
-
-Alert::info('Info Title', 'Info Message');
-Alert::warning('Warning Title', 'Warning Message');
-Alert::error('Error Title', 'Error Message');
-Alert::question('Question Title', 'Question Message');
-Alert::image('Image Title!','Image Description','Image URL','Image Width','Image Height');
-Alert::html('Html Title', 'Html Code', 'Type');
-
-```
