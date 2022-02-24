@@ -430,16 +430,16 @@ Route::post('/post-like', [App\Http\Controllers\HomeController::class, 'postLike
 ## add method on home controller
 
 ```php
-    public function postLike(Request $request){
-        $user = auth()->user();
-        $post = Post::whereId($request->post_id)->with('user')->first();
+public function postLike(Request $request){
+    $user = auth()->user();
+    $post = Post::whereId($request->post_id)->with('user')->first();
 
-        $author = $post->user;
+    $author = $post->user;
 
-        $author->notify(new PostLikeNotification($user,$post));
+    $author->notify(new PostLikeNotification($user,$post));
 
-        return response()->json(['success']);
-    }
+    return response()->json(['success']);
+}
 ```
 
 ## add notification 
