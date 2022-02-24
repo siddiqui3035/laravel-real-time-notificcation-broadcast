@@ -52,7 +52,11 @@ composer update
 
 ## Now go to websockaet website
 
+```web
+
 https://beyondco.de/docs/laravel-websockets/getting-started/installation
+
+```
 
 ## Laravel WebSockets can be installed via composer:
 
