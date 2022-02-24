@@ -50,7 +50,7 @@ npm run dev
 composer update
 ```
 
-##### Now go to websockaet website
+## Now go to websockaet website
 
 https://beyondco.de/docs/laravel-websockets/getting-started/installation
 
