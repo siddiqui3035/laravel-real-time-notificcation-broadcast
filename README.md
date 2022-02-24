@@ -174,8 +174,8 @@ Vue 3
 or 
 
 ```html
-    <posts :posts="{{ $posts }}" :user="{{ auth()->user() }}"
-    :user_notifications="{{ auth()->user()->notifications }}"/>
+<posts :posts="{{ $posts }}" :user="{{ auth()->user() }}"
+:user_notifications="{{ auth()->user()->notifications }}"/>
 ```
 ## Now run
 
@@ -190,15 +190,15 @@ php artisan migrate
 ## Now create a Model
 
 ```php
- php artisan make:model Post -mcf
- ```
+php artisan make:model Post -mcf
+```
 ## Now create user seeder
 
 ```php
 php artisan make:seeder UserSeeder 
- ```
+```
 
- ## Now add data on Postfactory
+## Now add data on Postfactory
 
 ```php
 public function definition()
@@ -441,7 +441,7 @@ Route::post('/post-like', [App\Http\Controllers\HomeController::class, 'postLike
 ## add notification 
 
 ```php
-    php artisan make:notification PostLikeNotification
+php artisan make:notification PostLikeNotification
 ```
 &
 
