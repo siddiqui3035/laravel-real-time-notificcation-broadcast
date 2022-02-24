@@ -104,7 +104,7 @@ Add host and port;
 ## Go to .env:
 Add APP_URL;
 ```php
-     APP_URL=http://localhost:8000
+APP_URL=http://localhost:8000
 ```
 &
 ```php
