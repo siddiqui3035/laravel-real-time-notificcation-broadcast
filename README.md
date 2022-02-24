@@ -532,9 +532,9 @@ php artisan migrate
 ## Go to user model
 
 ```php
-   public function receivesBroadcastNotificationOn(){
-        return 'post_like'.$this->id;
-    }
+public function receivesBroadcastNotificationOn(){
+    return 'post_like'.$this->id;
+}
 ```
 
 ## Go to route/channel.php
